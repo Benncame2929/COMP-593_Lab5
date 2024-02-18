@@ -13,6 +13,10 @@ import sys
 import poke_api
 import pastebin_api
 
+from poke_api import get_pokemon_info
+from pastebin_api import post_new_paste
+
+
 def main():
     poke_name = get_pokemon_name()
     poke_info = poke_api.get_pokemon_info(poke_name)
@@ -28,21 +32,22 @@ def get_pokemon_name():
     Returns:
         str: Pokemon name
     """
-    # TODO: Function body
-    return
+    if len(sys.argv) <2:
+        print("error Missing search term")
+        sys.exit()
 
-def get_paste_data(pokemon_info):
-    """Builds the title and body text for a PasteBin paste that lists a Pokemon's abilities.
+    return sys.argv[1]
 
-    Args:
-        pokemon_info (dict): Dictionary of Pokemon information
 
-    Returns:
-        (str, str): Title and body text for the PasteBin paste
-    """    
-    # TODO: Build the paste title
-    # TODO: Build the paste body text
-    return # (title, body_text)
+def get_paste_data(pokemon_info, pokemon_name):
+    """Builds the title and body text for a PasteBin paste that lists a Pokemon's abilities."""
+    title = f"{pokemon_name.title()}'s Abilities"  # 
+    abilities = pokemon_info.get('abilities', [])
+    body_text = "Abilities:\n" + '\n'.join([ability['ability']['name'].title() for ability in abilities])
+    return (title, body_text)
 
-if __name__ == '__main__':
-    main()
+
+
+
+    if __name__ == '__main__':
+        main()
